@@ -2,5 +2,3 @@ node_modules/
 
 .env
 
-# hide config
-src/config/config.json
