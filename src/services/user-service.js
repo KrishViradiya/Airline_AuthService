@@ -30,8 +30,24 @@ class UserService {
             const newToken = this.createToken({email:user.email,id:user.id});
             return newToken;
         } catch (error) {
-            console.log("Something went wrong in user service");
+            console.log("Something went wrong in signIn service");
             throw {error}
+        }
+    }
+
+    async isAuthenticated (token) {
+        try {
+            const response = this.verifyToken(token);
+            if(!response){
+                throw {error:'Invalid token'}
+            }
+            const user = this.repository.getUserById(response.id);
+            if(!user){
+                throw {error:'No user with such token exists'}
+            }
+            return user.id;
+        } catch (error) {
+            
         }
     }
 
@@ -72,6 +88,8 @@ class UserService {
             throw error;
         }
     }
+
+    
 }
 
 module.exports = UserService;
