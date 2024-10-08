@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const { User } = require("../models/index");
 
 class UserRepository {
@@ -22,11 +23,23 @@ class UserRepository {
 
   async getUserById(userId) {
     try {
-      const user = await User.findByPk(userId, 
-        {
-          attributes:['id','email']
-        }
-      )
+      const user = await User.findByPk(userId, {
+        attributes: ["id", "email"],
+      });
+      return user;
+    } catch (error) {
+      console.log("Something went wrong in the user repo");
+    }
+  }
+
+  async getuserEmail(email) {
+    try {
+      const user = await User.findOne({
+        where: {
+          email: email,
+        },
+      });
+     
       return user;
     } catch (error) {
       console.log("Something went wrong in the user repo");

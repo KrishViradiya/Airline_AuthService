@@ -23,6 +23,28 @@ const create  = async (req,res) => {
     }
 }
 
+const signIn = async(req,res) => {
+    try {
+        const {email,password} = req.body;
+        const response = await userService.signIn(email,password);
+        return res.status(200).json({
+            data:response,
+            success:true,
+            message:"Successfully signedIn",
+            err:{}
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            data:{},
+            err:error,
+            message:"Unable to create user",
+            success:false
+        })
+    }
+}
+
 module.exports = {
-    create
+    create,
+    signIn
 }
