@@ -14,10 +14,10 @@ const create  = async (req,res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(500).json({
+        return res.status(error.statusCode).json({
             data:{},
-            err:error,
-            message:"Unable to create user",
+            err:error.expanation,
+            message:error.message,
             success:false
         })
     }
@@ -35,10 +35,10 @@ const signIn = async(req,res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(500).json({
+        return res.status(error.statusCode).json({
             data:{},
-            err:error,
-            message:"Unable to create user",
+            err:error.expanation,
+            message:error.message,
             success:false
         })
     }
@@ -65,8 +65,29 @@ const isAuthenticated = async(req,res) => {
     }
 }
 
+const isAdmin = async(req,res) => {
+    try {
+        const response = await userService.isAdmin(req.body.id);
+        return res.status(200).json({
+            data:response,
+            err:{},
+            message:"Successfully fetched whether the user is admin or not",
+            success:true
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message:"Something went wrong ",
+            data:{},
+            success:false,
+            err:error
+        })
+    }
+}
+
 module.exports = {
     create,
     signIn,
-    isAuthenticated
+    isAuthenticated,
+    isAdmin
 }
